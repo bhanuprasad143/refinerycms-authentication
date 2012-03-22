@@ -1,13 +1,13 @@
 # Encoding: UTF-8
 $:.push File.expand_path('../../core/lib', __FILE__)
-require 'refinery/version'
+#require 'refinery/version'
 
-version = Refinery::Version.to_s
+#version = Refinery::Version.to_s
 
 Gem::Specification.new do |s|
   s.platform          = Gem::Platform::RUBY
   s.name              = %q{refinerycms-authentication}
-  s.version           = version
+  s.version           = %{2.0.2}
   s.summary           = %q{Authentication extension for Refinery CMS}
   s.description       = %q{The default authentication extension for Refinery CMS}
   s.email             = %q{info@refinerycms.com}
@@ -23,3 +23,4 @@ Gem::Specification.new do |s|
   s.add_dependency 'refinerycms-core',  version
   s.add_dependency 'devise',            '~> 2.0.0'
 end
+
