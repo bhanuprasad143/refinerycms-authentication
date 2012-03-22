@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
   s.files             = `git ls-files`.split("\n")
   s.test_files        = `git ls-files -- spec/*`.split("\n")
 
-  s.add_dependency 'refinerycms-core',  version
+  s.add_dependency 'refinerycms-core',  '2.0.2'
   s.add_dependency 'devise',            '~> 2.0.0'
 end
 
