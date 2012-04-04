@@ -15,7 +15,7 @@ module Refinery
           plugin.version = %q{2.0.0}
           plugin.menu_match = %r{refinery/users$}
           plugin.activity = {
-            :class_name => :'refinery/user',
+            :class_name => :'::User',
             :title => 'username'
           }
           plugin.url = proc { Refinery::Core::Engine.routes.url_helpers.admin_users_path }
@@ -34,3 +34,4 @@ module Refinery
     end
   end
 end
+

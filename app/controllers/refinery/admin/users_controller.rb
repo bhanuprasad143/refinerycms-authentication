@@ -6,7 +6,7 @@ module Refinery
       before_filter :find_user, :only => [:update, :destroy, :edit, :show]
 
       def index
-        @users = ::User.paginate(:page => params[:page], :per_page => 20)
+        @users = ::User.refinery_on_site(current_site).paginate(:page => params[:page], :per_page => 20)
       end
 
       def new
@@ -47,7 +47,7 @@ module Refinery
 
         # Store what the user selected.
         @selected_role_names = params[:user].delete(:roles) || []
-        unless current_refinery_user.has_role?(:superuser) and Refinery::Authentication.superuser_can_assign_roles
+        unless current_user.has_role?(:superuser) and Refinery::Authentication.superuser_can_assign_roles
           @selected_role_names = @user.roles.collect(&:title)
         end
         @selected_plugin_names = params[:user][:plugins]
@@ -77,17 +77,28 @@ module Refinery
         end
       end
 
+      def destroy
+        title = @user.login
+        if current_user.has_role?(:superuser)
+          @user.destroy
+          flash.notice = "#{title} was successfully removed."
+        else
+          flash.now[:error] = "Cannot remove user #{title}"
+        end
+        redirect_to refinery.admin_users_path
+      end
+
     protected
 
       def find_user
-        @user = User.find params[:id]
+        @user = current_site.users.find params[:id]
       end
 
       def find_user_with_slug
         begin
           find_user_without_slug
         rescue ActiveRecord::RecordNotFound
-          @user = ::User.all.detect{|u| u.to_param == params[:id]}
+          @user = current_site.users.detect{|u| u.to_param == params[:id]}
         end
       end
       alias_method_chain :find_user, :slug
